@@ -51,7 +51,7 @@ CREATE TABLE staff (
     last_name VARCHAR(50),
     email VARCHAR(100),
     phone_number VARCHAR(20),
-    position VARCHAR(20),
+    position VARCHAR(20) CHECK(position IN ('Trainer', 'Manager', 'Receptionist', 'Maintenance')) NOT NULL
     hire_date DATE,
     location_id INTEGER,
     FOREIGN KEY (location_id) REFERENCES locations(location_id)
@@ -129,8 +129,8 @@ CREATE TABLE payments (
     member_id INTEGER,
     amount DECIMAL(10, 2),
     payment_date DATE,
-    payment_method VARCHAR(20),
-    payment_type VARCHAR(50),
+    payment_method VARCHAR(20) CHECK((payment_method) IN ['Credit Card', 'Bank Transfer', 'PayPal', 'Cash'])
+    payment_type VARCHAR(50) CHECK((payment_type) IN ['Monthly membership fee', 'Day pass'])
     FOREIGN KEY (member_id) REFERENCES members(member_id)
 );
 
