@@ -8,6 +8,7 @@
 
 -- 1. List all classes with their instructors
 -- TODO: Write a query to list all classes with their instructors
+SELECT class_id
 
 -- 2. Find available classes for a specific date
 -- TODO: Write a query to find available classes for a specific date
