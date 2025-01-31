@@ -21,13 +21,13 @@ DROP TABLE IF EXISTS personal_training_sessions;
 DROP TABLE IF EXISTS member_health_metrics;
 DROP TABLE IF EXISTS equipment_maintenance_log;
 
--- locations table
+--- locations table
 CREATE TABLE locations (
     location_id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(255),
     address VARCHAR(255),
     phone_number VARCHAR(20),
-    email VARCHAR(100),
+    email VARCHAR(100) CHECK(email LIKE '%@%.%'),
     opening_hours VARCHAR(100)
 );
 
@@ -51,7 +51,7 @@ CREATE TABLE staff (
     last_name VARCHAR(50),
     email VARCHAR(100),
     phone_number VARCHAR(20),
-    position VARCHAR(20) CHECK(position IN ('Trainer', 'Manager', 'Receptionist', 'Maintenance')) NOT NULL
+    position VARCHAR(20) CHECK(position IN ('Trainer', 'Manager', 'Receptionist', 'Maintenance')) NOT NULL,
     hire_date DATE,
     location_id INTEGER,
     FOREIGN KEY (location_id) REFERENCES locations(location_id)
@@ -61,7 +61,7 @@ CREATE TABLE staff (
 CREATE TABLE equipment (
     equipment_id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(255),
-    type VARCHAR(20),
+    type VARCHAR(20) CHECK(type IN ('Cardio', 'Strength')),
     purchase_date DATE,
     last_maintenance_date DATE,
     next_maintenance_date DATE,
@@ -74,8 +74,8 @@ CREATE TABLE classes (
     class_id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(255),
     description TEXT,
-    capacity INTEGER,
-    duration INTEGER,
+    capacity INTEGER CHECK(capacity > 0),
+    duration INTEGER CHECK(duration > 0),
     location_id INTEGER,
     FOREIGN KEY (location_id) REFERENCES locations(location_id)
 );
@@ -86,7 +86,7 @@ CREATE TABLE class_schedule (
     class_id INTEGER,
     staff_id INTEGER,
     start_time DATETIME,
-    end_time DATETIME,
+    end_time DATETIME CHECK(end_time > start_time),
     FOREIGN KEY (class_id) REFERENCES classes(class_id),
     FOREIGN KEY (staff_id) REFERENCES staff(staff_id)
 );
@@ -97,8 +97,8 @@ CREATE TABLE memberships (
     member_id INTEGER,
     type VARCHAR(50),
     start_date DATE,
-    end_date DATE,
-    status VARCHAR(10),
+    end_date DATE CHECK(end_date >= start_date),
+    status VARCHAR(10) CHECK(status IN ('Active', 'Inactive')),
     FOREIGN KEY (member_id) REFERENCES members(member_id)
 );
 
@@ -108,7 +108,7 @@ CREATE TABLE attendance (
     member_id INTEGER,
     location_id INTEGER,
     check_in_time DATETIME,
-    check_out_time DATETIME,
+    check_out_time DATETIME CHECK(check_out_time >= check_in_time),
     FOREIGN KEY (member_id) REFERENCES members(member_id),
     FOREIGN KEY (location_id) REFERENCES locations(location_id)
 );
@@ -118,7 +118,7 @@ CREATE TABLE class_attendance (
     class_attendance_id INTEGER PRIMARY KEY AUTOINCREMENT,
     schedule_id INTEGER,
     member_id INTEGER,
-    attendance_status VARCHAR(20),
+    attendance_status VARCHAR(20) CHECK(attendance_status IN ('Registered', 'Attended', 'Unattended')),
     FOREIGN KEY (schedule_id) REFERENCES class_schedule(schedule_id),
     FOREIGN KEY (member_id) REFERENCES members(member_id)
 );
@@ -127,10 +127,10 @@ CREATE TABLE class_attendance (
 CREATE TABLE payments (
     payment_id INTEGER PRIMARY KEY AUTOINCREMENT,
     member_id INTEGER,
-    amount DECIMAL(10, 2),
+    amount DECIMAL(10, 2) CHECK(amount > 0),
     payment_date DATE,
-    payment_method VARCHAR(20) CHECK((payment_method) IN ['Credit Card', 'Bank Transfer', 'PayPal', 'Cash'])
-    payment_type VARCHAR(50) CHECK((payment_type) IN ['Monthly membership fee', 'Day pass'])
+    payment_method VARCHAR(20) CHECK(payment_method IN ('Credit Card', 'Bank Transfer', 'PayPal', 'Cash')),
+    payment_type VARCHAR(50) CHECK(payment_type IN ('Monthly membership fee', 'Day pass')),
     FOREIGN KEY (member_id) REFERENCES members(member_id)
 );
 
@@ -141,7 +141,7 @@ CREATE TABLE personal_training_sessions (
     staff_id INTEGER,
     session_date DATE,
     start_time TIME,
-    end_time TIME,
+    end_time TIME CHECK(end_time > start_time),
     notes TEXT,
     FOREIGN KEY (member_id) REFERENCES members(member_id),
     FOREIGN KEY (staff_id) REFERENCES staff(staff_id)
@@ -152,10 +152,10 @@ CREATE TABLE member_health_metrics (
     metric_id INTEGER PRIMARY KEY AUTOINCREMENT,
     member_id INTEGER,
     measurement_date DATE,
-    weight DECIMAL(5, 2),
+    weight DECIMAL(5, 2) CHECK(weight > 0),
     body_fat_percentage DECIMAL(5, 2),
     muscle_mass DECIMAL(5, 2),
-    bmi DECIMAL(4, 2),
+    bmi DECIMAL(4, 2) CHECK(bmi > 0),
     FOREIGN KEY (member_id) REFERENCES members(member_id)
 );
 
