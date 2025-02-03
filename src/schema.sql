@@ -118,7 +118,7 @@ CREATE TABLE class_attendance (
     class_attendance_id INTEGER PRIMARY KEY AUTOINCREMENT,
     schedule_id INTEGER,
     member_id INTEGER,
-    attendance_status VARCHAR(20) CHECK(attendance_status IN ('Registered', 'Attended', 'Unattended')),
+    attendance_status VARCHAR(20) CHECK(attendance_status IN ('Registered', 'Attended', 'Unattended', 'Deregistered')),
     FOREIGN KEY (schedule_id) REFERENCES class_schedule(schedule_id),
     FOREIGN KEY (member_id) REFERENCES members(member_id)
 );
