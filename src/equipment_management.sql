@@ -12,7 +12,7 @@ PRAGMA foreign_key = ON;
 /* SELECT equipment_id, name, next_maintenance_date
 FROM equipment
 WHERE CAST((JulianDay(next_maintenance_date) - JulianDay('now')) As Integer) < 30 --find time difference in days as INT
-ORDER BY next_maintenance_date */
+ORDER BY next_maintenance_date; */
 
 -- 2. Count equipment types in stock (UNSURE WHAT IS WANTED SO WILL DO TWO) 
 

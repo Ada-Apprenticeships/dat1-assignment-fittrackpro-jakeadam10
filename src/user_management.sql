@@ -40,7 +40,8 @@ WHERE rc.registration_count = (
 
 
 -- 5. Find member with the least class registrations
-/* WITH registration_counts AS (
+/* 
+WITH registration_counts AS (
     SELECT member_id, COUNT(*) AS registration_count
     FROM class_attendance
     GROUP BY member_id
@@ -52,13 +53,16 @@ JOIN members m ON rc.member_id = m.member_id
 WHERE rc.registration_count = (
     SELECT MIN(registration_count)
     FROM registration_counts
-); */ 
+); 
+*/ 
 
 -- 6. Calculate the percentage of members who have attended at least one class
 -- Rounded to 2 decimal places to follow professional conventions
-/* SELECT 
+/* 
+SELECT 
     ROUND(CAST(AttendedMembers.Count AS FLOAT) * 100 / TotalMembers.Count, 2) AS PercentageAttended
 FROM
     (SELECT COUNT(DISTINCT member_id) AS Count FROM class_attendance 
         WHERE attendance_status = 'Attended') AS AttendedMembers,
-    (SELECT COUNT(DISTINCT member_id) AS Count FROM class_attendance) AS TotalMembers; */
+    (SELECT COUNT(DISTINCT member_id) AS Count FROM class_attendance) AS TotalMembers; 
+*/

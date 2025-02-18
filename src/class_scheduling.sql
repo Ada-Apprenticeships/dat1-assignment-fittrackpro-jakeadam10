@@ -19,7 +19,6 @@ WHERE SUBSTR(start_time, 1, 10) = '2025-02-01'; */
 
 
 -- 3. Register a member for a class
--- TODO: Write a query to register a member for a class
 /* INSERT INTO class_attendance (schedule_id, member_id, attendance_status) 
 VALUES (3, 11, 'Registered'); */
 
@@ -31,7 +30,6 @@ WHERE member_id = 2 AND schedule_id = 7; */
 
 
 -- 5. List top 3 most popular classes
--- TODO: Write a query to list top 3 most popular classes
 
 /*
 SELECT c.class_id, c.name AS class_name, SUM(rc.reg_count) AS reg_count 
@@ -48,12 +46,11 @@ LIMIT 3;
 */
 
 -- 6. Calculate average number of classes per member
--- TODO: Write a query to calculate average number of classes per member
-
-SELECT ROUND(AVG(classes_by_mem),2) as Avg_class_per_member_2dp
+/*
+SELECT ROUND(AVG(class_count), 2) AS average_classes_per_member
 FROM (
-    SELECT member_id, COUNT(*) as classes_by_mem
+    SELECT COUNT(DISTINCT schedule_id) AS class_count
     FROM class_attendance
     GROUP BY member_id
-    )
-
+) AS member_classes;
+*/
