@@ -10,18 +10,15 @@ PRAGMA foreign_key = ON;
 
 -- 1. List all staff members by role
 /*
-SELECT 
-    staff_id, 
-    first_name, 
-    last_name, 
-    position AS role
+SELECT staff_id, first_name, last_name, position AS role
 FROM staff
 ORDER BY role;
 */
 
 -- 2. Find trainers with one or more personal training session in the next 30 days
 /*
-SELECT s.staff_id, 
+SELECT 
+    s.staff_id, 
     s.first_name || ' ' || s.last_name AS trainer_name, --concatonates first and last name with a space
     COUNT(p.session_date) AS session_count
 FROM personal_training_sessions p
