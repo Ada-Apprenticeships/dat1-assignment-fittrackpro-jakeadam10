@@ -65,12 +65,12 @@ WHERE rc.registration_count = (
 
 -- 6. Calculate the percentage of members who have attended at least one class
 
-SELECT ROUND(CAST(attended_members.count AS FLOAT) * 100 / total_members.Count, 2) AS percentage_attended --Rounded to 2 decimal places to follow professional conventions
+SELECT ROUND( CAST(attended_members.count AS FLOAT) * 100 / total_members.Count, 2 ) AS percentage_attended --Rounded to 2 decimal places to follow professional conventions
 
-FROM ( SELECT COUNT(DISTINCT member_id) AS count 
+FROM ( SELECT COUNT( DISTINCT member_id ) AS count 
        FROM class_attendance 
        WHERE attendance_status = 'Attended') AS attended_members,
 
-     ( SELECT COUNT(DISTINCT member_id) AS count 
+     ( SELECT COUNT( DISTINCT member_id ) AS count 
        FROM class_attendance) AS total_members; 
 
